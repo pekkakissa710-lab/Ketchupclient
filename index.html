@@ -1,73 +1,302 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download KetchupClient</title>
-    <style>
-        /* General Page Styling */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KetchupClient</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-        }
+    :root {
+      --red: #c0392b;
+      --red-hot: #e74c3c;
+      --red-dark: #7b1a13;
+      --cream: #f5ede3;
+      --dark: #0e0a09;
+      --grain-opacity: 0.06;
+    }
 
-        h1 { color: #333; margin-bottom: 10px; }
-        p { color: #666; margin-bottom: 30px; }
+    body {
+      font-family: 'Space Mono', monospace;
+      background-color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
 
-        /* Red Download Button */
-        .download-button {
-            display: inline-block;
-            padding: 15px 35px;
-            background-color: #d32f2f;
-            color: white;
-            text-decoration: none;
-            font-size: 20px;
-            font-weight: bold;
-            border-radius: 8px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
+    /* Noise grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: var(--grain-opacity);
+      pointer-events: none;
+      z-index: 100;
+    }
 
-        .download-button:hover {
-            background-color: #b71c1c;
-            transform: scale(1.05);
-        }
+    /* Animated background blobs */
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
 
-        .version-tag {
-            display: block;
-            margin-bottom: 15px;
-            color: #d32f2f;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-    </style>
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.25;
+      animation: drift 8s ease-in-out infinite alternate;
+    }
+
+    .blob-1 {
+      width: 500px; height: 500px;
+      background: var(--red);
+      top: -150px; left: -150px;
+      animation-delay: 0s;
+    }
+
+    .blob-2 {
+      width: 350px; height: 350px;
+      background: #8b0000;
+      bottom: -100px; right: -80px;
+      animation-delay: -3s;
+    }
+
+    .blob-3 {
+      width: 250px; height: 250px;
+      background: var(--red-hot);
+      top: 50%; left: 60%;
+      animation-delay: -5s;
+    }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(40px, 30px) scale(1.08); }
+    }
+
+    /* Card */
+    .card {
+      position: relative;
+      z-index: 10;
+      width: 420px;
+      max-width: 92vw;
+      padding: 48px 40px 44px;
+      background: rgba(14, 10, 9, 0.75);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(192, 57, 43, 0.35);
+      border-radius: 4px;
+      text-align: center;
+      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Corner accents */
+    .card::before, .card::after {
+      content: '';
+      position: absolute;
+      width: 18px; height: 18px;
+      border-color: var(--red);
+      border-style: solid;
+    }
+    .card::before {
+      top: -1px; left: -1px;
+      border-width: 2px 0 0 2px;
+    }
+    .card::after {
+      bottom: -1px; right: -1px;
+      border-width: 0 2px 2px 0;
+    }
+
+    /* Logo / Ketchup icon */
+    .icon-wrap {
+      margin: 0 auto 20px;
+      width: 64px; height: 64px;
+      position: relative;
+    }
+
+    .ketchup-bottle {
+      width: 64px;
+      height: 64px;
+      animation: bounce 2.5s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-6px); }
+    }
+
+    /* Title */
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      letter-spacing: 4px;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 4px;
+      text-shadow: 0 0 40px rgba(231, 76, 60, 0.4);
+    }
+
+    .version-tag {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--red-hot);
+      background: rgba(192, 57, 43, 0.12);
+      border: 1px solid rgba(192, 57, 43, 0.4);
+      padding: 4px 12px;
+      border-radius: 2px;
+      margin: 14px 0 18px;
+    }
+
+    p {
+      font-size: 13px;
+      color: rgba(245, 237, 227, 0.45);
+      letter-spacing: 0.5px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    /* Download button */
+    .download-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 36px;
+      background: var(--red);
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border-radius: 3px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+      box-shadow: 0 4px 24px rgba(192, 57, 43, 0.45), 0 0 0 0 rgba(231,76,60,0);
+    }
+
+    .download-button::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Shimmer sweep */
+    .download-button::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.6s ease;
+    }
+
+    .download-button:hover::after {
+      left: 160%;
+    }
+
+    .download-button:hover {
+      background: var(--red-hot);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(231, 76, 60, 0.55), 0 0 0 3px rgba(231,76,60,0.15);
+    }
+
+    .download-button:active {
+      transform: translateY(0);
+    }
+
+    /* Download arrow icon */
+    .dl-icon {
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+    }
+
+    /* Bottom line */
+    .footer-note {
+      margin-top: 24px;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: rgba(245, 237, 227, 0.2);
+      text-transform: uppercase;
+    }
+
+    /* Horizontal rule accent */
+    .divider {
+      width: 48px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      margin: 20px auto;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>KetchupClient</h1>
-        <span class="version-tag">Version 1.21.11</span>
-        <p>Get the latest version of KetchupClient now.</p>
-        
-        <a href="Ketchupclient.jar" download="Ketchupclient-1.21.11.jar" class="download-button">
-            Download Now
-        </a>
+  <div class="bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="card">
+
+    <!-- Ketchup bottle SVG icon -->
+    <div class="icon-wrap">
+      <svg class="ketchup-bottle" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Cap -->
+        <rect x="25" y="2" width="14" height="7" rx="3" fill="#b71c1c"/>
+        <!-- Neck -->
+        <rect x="27" y="9" width="10" height="8" rx="2" fill="#c62828"/>
+        <!-- Shoulder -->
+        <path d="M22 17 Q18 22 16 30 H48 Q46 22 42 17 Z" fill="#d32f2f"/>
+        <!-- Body -->
+        <rect x="16" y="30" width="32" height="28" rx="8" fill="#e53935"/>
+        <!-- Label area -->
+        <rect x="20" y="34" width="24" height="18" rx="4" fill="rgba(255,255,255,0.12)"/>
+        <!-- K letter -->
+        <text x="28.5" y="47" font-family="'Bebas Neue', sans-serif" font-size="13" fill="white" opacity="0.9">K</text>
+        <!-- Shine -->
+        <ellipse cx="23" cy="36" rx="3" ry="5" fill="rgba(255,255,255,0.15)" transform="rotate(-15 23 36)"/>
+      </svg>
     </div>
+
+    <h1>KetchupClient</h1>
+
+    <span class="version-tag">v1.21.11</span>
+
+    <div class="divider"></div>
+
+    <p>Get the latest build of KetchupClient.<br>Fabric · Minecraft 1.21.x</p>
+
+    <a href="Ketchupclient.jar" download="Ketchupclient-1.21.11.jar" class="download-button">
+      <svg class="dl-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 1v9M4 7l4 4 4-4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2 13h12" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      Download Now
+    </a>
+
+    <p class="footer-note">Free · No account required</p>
+
+  </div>
 
 </body>
 </html>
