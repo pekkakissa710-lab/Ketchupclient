@@ -2,84 +2,72 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KetchupSMP</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download KetchupClient</title>
     <style>
-        body { 
-            font-family: 'Fredoka One', cursive; 
-            overflow: hidden; 
-            touch-action: none; 
-            user-select: none; 
-            -webkit-user-select: none;
+        /* General Page Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h1 { color: #333; margin-bottom: 10px; }
+        p { color: #666; margin-bottom: 30px; }
+
+        /* Red Download Button */
+        .download-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background-color: #d32f2f;
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .download-button:hover {
+            background-color: #b71c1c;
+            transform: scale(1.05);
+        }
+
+        .version-tag {
+            display: block;
+            margin-bottom: 15px;
+            color: #d32f2f;
+            font-weight: bold;
+            text-transform: uppercase;
         }
     </style>
 </head>
-<body class="bg-gray-950 text-white h-screen flex flex-col items-center justify-center p-4">
+<body>
 
-    <div class="text-center mb-8">
-        <h1 class="text-5xl md:text-6xl text-red-500 mb-4 tracking-wide">KetchupSMP</h1>
-        <p class="text-lg md:text-xl text-gray-300 max-w-lg leading-relaxed">
-            Welcome to KetchupSMP, a survival multiplayer server with a deep economy system. 
-            Earn money, trade at the auction house (/ah), visit the shop (/shop), and sell your goods (/sell).
-        </p>
-    </div>
-
-    <div class="bg-gray-900 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-gray-800 space-y-4">
-        <!-- Server IP -->
-        <div>
-            <label class="block text-gray-400 mb-1 text-xs uppercase tracking-wider">Server IP</label>
-            <div class="flex gap-2">
-                <input type="text" id="ip-field" readonly value="ketchupsmp.my.to:14524" 
-                    class="w-full bg-gray-950 p-3 rounded-xl border border-gray-700 text-center outline-none">
-                <button onclick="copyContent('ip-field', this)" class="bg-gray-800 hover:bg-gray-700 px-4 py-3 rounded-xl transition font-bold text-sm whitespace-nowrap">
-                    COPY
-                </button>
-            </div>
-        </div>
-
-        <!-- Discord Link -->
-        <div>
-            <label class="block text-gray-400 mb-1 text-xs uppercase tracking-wider">Discord</label>
-            <div class="flex gap-2">
-                <input type="text" id="dc-field" readonly value="discord.gg/wG6b3JFa8" 
-                    class="w-full bg-gray-950 p-3 rounded-xl border border-gray-700 text-center outline-none">
-                <button onclick="copyContent('dc-field', this)" class="bg-gray-800 hover:bg-gray-700 px-4 py-3 rounded-xl transition font-bold text-sm whitespace-nowrap">
-                    COPY
-                </button>
-            </div>
-        </div>
-
-        <!-- Join Discord Button -->
-        <a href="https://discord.gg/wG6b3JFa8" target="_blank" 
-           class="flex items-center justify-center gap-2 w-full bg-purple-600 hover:bg-purple-700 py-4 rounded-xl transition duration-200 font-bold">
-            <!-- Valkoinen reunus lisätty filterillä -->
-            <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Logo" class="w-6 h-6 filter drop-shadow-[0_0_2px_white]">
-            Join our discord!
+    <div class="container">
+        <h1>KetchupClient</h1>
+        <span class="version-tag">Version 1.21.11</span>
+        <p>Get the latest version of KetchupClient now.</p>
+        
+        <a href="Ketchupclient.jar" download="Ketchupclient-1.21.11.jar" class="download-button">
+            Download Now
         </a>
     </div>
 
-    <script>
-        document.addEventListener('contextmenu', event => event.preventDefault());
-
-        function copyContent(id, btn) {
-            const input = document.getElementById(id);
-            const tempArea = document.createElement("textarea");
-            tempArea.value = input.value;
-            document.body.appendChild(tempArea);
-            tempArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempArea);
-            
-            const original = btn.innerText;
-            btn.innerText = "COPIED!";
-            setTimeout(() => btn.innerText = original, 2000);
-        }
-
-        document.addEventListener('keydown', function(e) {
-            if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '0')) e.preventDefault();
-        });
-    </script>
 </body>
 </html>
